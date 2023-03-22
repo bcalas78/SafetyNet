@@ -1,6 +1,5 @@
 package com.openclassrooms.safetynet.repository;
 
-import com.openclassrooms.safetynet.model.Firestation;
 import com.openclassrooms.safetynet.model.Person;
 import lombok.Getter;
 import org.springframework.stereotype.Repository;

@@ -1,6 +1,5 @@
 package com.openclassrooms.safetynet.controller;
 
-import com.openclassrooms.safetynet.model.Data;
 import com.openclassrooms.safetynet.model.Firestation;
 import com.openclassrooms.safetynet.service.FirestationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,7 @@ public class FirestationController {
 
     @GetMapping("/firestation")
     public List<Firestation> firestationsList() {
-     return firestationService.getFirestations();
+        return firestationService.getFirestations();
     }
 
 }
