@@ -11,4 +11,7 @@ public abstract class FirestationRepository {
 
     private List<Firestation> firestations;
     public abstract void save(List<Firestation> firestationList);
+
+    private Firestation firestation;
+    public void addFirestation(Firestation firestation) {}
 }

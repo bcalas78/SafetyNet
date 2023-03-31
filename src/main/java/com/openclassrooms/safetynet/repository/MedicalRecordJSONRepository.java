@@ -14,4 +14,9 @@ public class MedicalRecordJSONRepository extends MedicalRecordRepository {
     public void save(List<MedicalRecord> medicalRecordList) {
         this.setMedicalRecords(medicalRecordList);
     }
+
+    @Override
+    public void addMedicalRecord(MedicalRecord medicalRecord) {
+        this.getMedicalRecords().add(medicalRecord);
+    }
 }

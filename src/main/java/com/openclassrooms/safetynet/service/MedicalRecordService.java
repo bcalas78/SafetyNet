@@ -16,4 +16,8 @@ public class MedicalRecordService {
     public List<MedicalRecord> getMedicalRecords() {
         return medicalRecordRepository.getMedicalRecords();
     }
+
+    public void addMedicalRecord(MedicalRecord medicalRecord) {
+        medicalRecordRepository.addMedicalRecord(medicalRecord);
+    }
 }

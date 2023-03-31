@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class FirestationService {
@@ -15,5 +17,9 @@ public class FirestationService {
 
     public List<Firestation> getFirestations() {
         return firestationRepository.getFirestations();
+    }
+
+    public void addFirestation(Firestation firestation) {
+        firestationRepository.addFirestation(firestation);
     }
 }

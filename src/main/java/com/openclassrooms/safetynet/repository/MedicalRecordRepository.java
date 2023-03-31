@@ -10,4 +10,9 @@ public abstract class MedicalRecordRepository {
     private List<MedicalRecord> medicalRecords;
     public abstract void save(List<MedicalRecord> medicalRecordList);
 
+    private MedicalRecord medicalRecord;
+
+    public void addMedicalRecord(MedicalRecord medicalRecord) {
+    }
+
 }

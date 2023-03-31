@@ -16,4 +16,13 @@ public class PersonService {
     public List<Person> getPersons() {
         return personRepository.getPersons();
     }
+
+    public void addPerson(Person person) {
+        personRepository.addPerson(person);
+    }
+
+    public void deletePerson(String firstName, String lastName){
+        personRepository.deletePerson(firstName, lastName);
+    }
+
 }

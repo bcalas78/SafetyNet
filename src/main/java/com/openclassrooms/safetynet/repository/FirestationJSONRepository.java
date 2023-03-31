@@ -12,6 +12,12 @@ public class FirestationJSONRepository extends FirestationRepository {
 
     @Override
     public void save(List<Firestation> firestationList) {
+
         this.setFirestations(firestationList);
+    }
+
+    @Override
+    public void addFirestation(Firestation firestation) {
+        this.getFirestations().add(firestation);
     }
 }

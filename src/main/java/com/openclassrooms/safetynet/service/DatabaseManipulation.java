@@ -32,6 +32,7 @@ public class DatabaseManipulation {
         medicalRecordRepository.save(data.getMedicalrecords());
 
         System.out.println(data);
+        System.out.println(data.getPersons());
     }
 
 }
