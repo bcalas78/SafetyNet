@@ -17,6 +17,6 @@ public abstract class PersonRepository {
     }
 
     public abstract void deletePerson(String firstName, String lastName);
-    //public abstract void updatePerson(Person person);
+    public abstract void updatePerson(Person person);
 
 }

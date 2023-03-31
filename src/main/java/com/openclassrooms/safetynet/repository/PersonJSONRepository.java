@@ -28,8 +28,18 @@ public class PersonJSONRepository extends PersonRepository {
 
     @Override
     public void deletePerson(String firstName, String lastName){
-        this.deletePerson(firstName, lastName);
+        for ( Person person: this.getPersons()) {
+            if(person.getFirstName().equals(firstName) && person.getLastName().equals(lastName)) {
+                this.getPersons().remove(person);
+            }
+        }
     }
+
+    @Override
+    public void updatePerson(Person person) {
+
+    }
+
 
 
 }
