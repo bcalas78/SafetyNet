@@ -25,4 +25,14 @@ public class PersonService {
         personRepository.deletePerson(firstName, lastName);
     }
 
+    public Person updatePerson(Person updatedPerson) {
+        Person personToUpdate = personRepository.findByFirstNameAndLastName(updatedPerson.getFirstName(), updatedPerson.getLastName());
+        personToUpdate.setAddress(updatedPerson.getAddress());
+        personToUpdate.setCity(updatedPerson.getCity());
+        personToUpdate.setZip(updatedPerson.getZip());
+        personToUpdate.setPhone(updatedPerson.getPhone());
+        personToUpdate.setEmail(updatedPerson.getEmail());
+
+        return personRepository.saveAndUpdate(personToUpdate);
+    }
 }

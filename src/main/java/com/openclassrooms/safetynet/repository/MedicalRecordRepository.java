@@ -15,4 +15,8 @@ public abstract class MedicalRecordRepository {
     public void addMedicalRecord(MedicalRecord medicalRecord) {
     }
 
+    public abstract void deleteMedicalRecord(String firstName, String lastName);
+
+    public abstract MedicalRecord saveAndUpdate(MedicalRecord medicalRecord);
+    public abstract MedicalRecord findByFirstNameAndLastName(String firstName, String lastName);
 }

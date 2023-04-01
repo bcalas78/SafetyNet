@@ -22,4 +22,15 @@ public class FirestationService {
     public void addFirestation(Firestation firestation) {
         firestationRepository.addFirestation(firestation);
     }
+
+    public void deleteFirestation(String station, String address) {
+        firestationRepository.deleteFirestation(station, address);
+    }
+
+    public Firestation updateFirestation(Firestation updatedFirestation) {
+        Firestation firestationToUpdate = firestationRepository.findByAddress(updatedFirestation.getAddress());
+        firestationToUpdate.setStation(updatedFirestation.getStation());
+
+        return firestationRepository.saveAndUpdate(firestationToUpdate);
+    }
 }

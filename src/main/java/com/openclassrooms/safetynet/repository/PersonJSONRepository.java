@@ -1,15 +1,9 @@
 package com.openclassrooms.safetynet.repository;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openclassrooms.safetynet.model.Person;
 import lombok.Getter;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.List;
 
 @Getter
@@ -28,18 +22,30 @@ public class PersonJSONRepository extends PersonRepository {
 
     @Override
     public void deletePerson(String firstName, String lastName){
-        for ( Person person: this.getPersons()) {
+        List<Person> temporaryList = this.getPersons();
+        for ( Person person: temporaryList ) {
             if(person.getFirstName().equals(firstName) && person.getLastName().equals(lastName)) {
                 this.getPersons().remove(person);
+                break;
             }
         }
     }
 
     @Override
-    public void updatePerson(Person person) {
-
+    public Person findByFirstNameAndLastName(String firstName, String lastName) {
+        List<Person> temporaryList = this.getPersons();
+        for (Person person : temporaryList) {
+            if (person.getFirstName().equals(firstName) && person.getLastName().equals(lastName)) {
+                return person;
+            }
+        }
+        return null;
     }
 
-
+    @Override
+    public Person saveAndUpdate(Person updatedPerson) {
+        List<Person> temporaryList = this.getPersons();
+        return updatedPerson;
+    }
 
 }

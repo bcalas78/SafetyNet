@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -30,6 +29,17 @@ public class FirestationController {
     public ResponseEntity<Firestation> addFirestation(@RequestBody Firestation firestation) {
         firestationService.addFirestation(firestation);
         return new ResponseEntity<Firestation>(firestation, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/firestation")
+    public void deleteFirestation(@RequestParam("station" ) String station, @RequestParam("address") String address) {
+        firestationService.deleteFirestation(station, address);
+    }
+
+    @PutMapping("/firestation")
+    public ResponseEntity<Firestation> updateFirestation(@RequestBody Firestation updatedFirestation) {
+        Firestation savedFirestation = firestationService.updateFirestation(updatedFirestation);
+        return ResponseEntity.ok(savedFirestation);
     }
 
 }

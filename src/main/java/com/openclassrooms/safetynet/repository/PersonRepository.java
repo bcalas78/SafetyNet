@@ -4,7 +4,6 @@ import com.openclassrooms.safetynet.model.Person;
 import lombok.Data;
 
 import java.util.List;
-import java.util.Map;
 
 @Data
 public abstract class PersonRepository {
@@ -17,6 +16,7 @@ public abstract class PersonRepository {
     }
 
     public abstract void deletePerson(String firstName, String lastName);
-    public abstract void updatePerson(Person person);
 
+    public abstract Person saveAndUpdate(Person person);
+    public abstract Person findByFirstNameAndLastName(String firstName, String lastName);
 }

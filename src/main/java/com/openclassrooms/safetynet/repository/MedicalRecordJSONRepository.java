@@ -19,4 +19,32 @@ public class MedicalRecordJSONRepository extends MedicalRecordRepository {
     public void addMedicalRecord(MedicalRecord medicalRecord) {
         this.getMedicalRecords().add(medicalRecord);
     }
+
+    @Override
+    public void deleteMedicalRecord(String firstName, String lastName){
+        List<MedicalRecord> medicalRecordtemporaryList = this.getMedicalRecords();
+        for ( MedicalRecord medicalRecord: medicalRecordtemporaryList ) {
+            if(medicalRecord.getFirstName().equals(firstName) && medicalRecord.getLastName().equals(lastName)) {
+                this.getMedicalRecords().remove(medicalRecord);
+                break;
+            }
+        }
+    }
+
+    @Override
+    public MedicalRecord findByFirstNameAndLastName(String firstName, String lastName) {
+        List<MedicalRecord> medicalRecordtemporaryList = this.getMedicalRecords();
+        for (MedicalRecord medicalRecord : medicalRecordtemporaryList) {
+            if (medicalRecord.getFirstName().equals(firstName) && medicalRecord.getLastName().equals(lastName)) {
+                return medicalRecord;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public MedicalRecord saveAndUpdate(MedicalRecord updatedMedicalRecord) {
+        List<MedicalRecord> medicalRecordtemporaryList = this.getMedicalRecords();
+        return updatedMedicalRecord;
+    }
 }

@@ -32,8 +32,10 @@ public class PersonController {
         personService.deletePerson(firstName, lastName);
    }
 
-   /*@PutMapping("/person")
-    public void updatePerson(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
-        personService.updatePerson(firstName, lastName);
-    }*/
+    @PutMapping
+    public ResponseEntity<Person> updatePerson(@RequestBody Person updatedPerson) {
+        Person savedPerson = personService.updatePerson(updatedPerson);
+        return ResponseEntity.ok(savedPerson);
+    }
+
 }

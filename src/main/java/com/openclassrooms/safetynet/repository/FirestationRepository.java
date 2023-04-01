@@ -14,4 +14,10 @@ public abstract class FirestationRepository {
 
     private Firestation firestation;
     public void addFirestation(Firestation firestation) {}
+
+    public abstract void deleteFirestation(String station, String address);
+
+    public abstract Firestation saveAndUpdate(Firestation firestation);
+
+    public abstract Firestation findByAddress(String address);
 }
