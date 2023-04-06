@@ -19,4 +19,7 @@ public abstract class PersonRepository {
 
     public abstract Person saveAndUpdate(Person person);
     public abstract Person findByFirstNameAndLastName(String firstName, String lastName);
+
+    public abstract List<Person> getPersonsByAddress(String address);
+
 }

@@ -1,9 +1,11 @@
 package com.openclassrooms.safetynet.repository;
 
 import com.openclassrooms.safetynet.model.Firestation;
+import com.openclassrooms.safetynet.model.Person;
 import lombok.Getter;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -47,5 +49,17 @@ public class FirestationJSONRepository extends FirestationRepository {
     public Firestation saveAndUpdate(Firestation updatedFirestation) {
         List<Firestation> firestationTemporaryList = this.getFirestations();
         return updatedFirestation;
+    }
+
+    @Override
+    public List<String> getAddressesByFirestationNumber(String firestationNumber) {
+        List<String> addresses = new ArrayList<>();
+        List<Firestation> temporaryFirestationList = this.getFirestations();
+        for (Firestation firestation : temporaryFirestationList){
+            if(firestation.getStation().equals(firestationNumber)) {
+                addresses.add(firestation.getAddress());
+            }
+        }
+        return addresses;
     }
 }

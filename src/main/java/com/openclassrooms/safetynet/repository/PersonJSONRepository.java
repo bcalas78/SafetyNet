@@ -4,6 +4,7 @@ import com.openclassrooms.safetynet.model.Person;
 import lombok.Getter;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -46,6 +47,18 @@ public class PersonJSONRepository extends PersonRepository {
     public Person saveAndUpdate(Person updatedPerson) {
         List<Person> temporaryList = this.getPersons();
         return updatedPerson;
+    }
+
+    @Override
+    public List<Person> getPersonsByAddress(String address) {
+        List<Person> persons = new ArrayList<>();
+        List<Person> temporaryPersonList = this.getPersons();
+        for (Person person : temporaryPersonList) {
+            if (person.getAddress().equals(address)) {
+                persons.add(person);
+            }
+        }
+        return persons;
     }
 
 }

@@ -20,4 +20,6 @@ public abstract class FirestationRepository {
     public abstract Firestation saveAndUpdate(Firestation firestation);
 
     public abstract Firestation findByAddress(String address);
+
+    public abstract List<String> getAddressesByFirestationNumber(String firestationNumber);
 }
