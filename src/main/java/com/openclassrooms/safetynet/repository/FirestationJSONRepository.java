@@ -62,4 +62,27 @@ public class FirestationJSONRepository extends FirestationRepository {
         }
         return addresses;
     }
+
+    @Override
+    public int getStationNumberByAddress(String address){
+        List<Firestation> firestationTemporaryList = this.getFirestations();
+        for (Firestation firestation : firestationTemporaryList) {
+            if ((firestation.getAddress().equals(address))) {
+                return Integer.parseInt(firestation.getStation());
+            }
+        }
+        return -1;
+    }
+
+    @Override
+    public List<Firestation> getFirestationByStationNumber(String stationNumber){
+        List<Firestation> firestations = new ArrayList<>();
+
+        for (Firestation firestation : this.getFirestations()) {
+            if (firestation.getStation().equals(stationNumber)){
+                firestations.add(firestation);
+            }
+        }
+        return firestations;
+    }
 }

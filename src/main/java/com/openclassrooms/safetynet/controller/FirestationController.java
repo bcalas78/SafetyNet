@@ -2,7 +2,9 @@ package com.openclassrooms.safetynet.controller;
 
 import com.openclassrooms.safetynet.model.Data;
 import com.openclassrooms.safetynet.model.Firestation;
+import com.openclassrooms.safetynet.model.FirestationDTO;
 import com.openclassrooms.safetynet.model.Person;
+import com.openclassrooms.safetynet.service.CommonService;
 import com.openclassrooms.safetynet.service.FirestationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,10 +22,13 @@ public class FirestationController {
     @Autowired
     private FirestationService firestationService;
 
-    @GetMapping("/firestation")
-    public List<Firestation> firestationsList() {
-        return firestationService.getFirestations();
-    }
+    @Autowired
+    private CommonService commonService;
+
+    //@GetMapping("/firestation")
+    //public List<Firestation> firestationsList() {
+        //return firestationService.getFirestations();
+    //}
 
     @PostMapping("/firestation")
     public ResponseEntity<Firestation> addFirestation(@RequestBody Firestation firestation) {
@@ -40,6 +45,11 @@ public class FirestationController {
     public ResponseEntity<Firestation> updateFirestation(@RequestBody Firestation updatedFirestation) {
         Firestation savedFirestation = firestationService.updateFirestation(updatedFirestation);
         return ResponseEntity.ok(savedFirestation);
+    }
+
+    @GetMapping("/firestation")
+    public FirestationDTO getPersonsByFirestationNumber(@RequestParam String stationNumber) {
+        return commonService.getPersonsByFirestationNumber(stationNumber);
     }
 
 }

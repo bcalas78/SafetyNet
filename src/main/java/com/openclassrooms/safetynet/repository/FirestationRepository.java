@@ -22,4 +22,7 @@ public abstract class FirestationRepository {
     public abstract Firestation findByAddress(String address);
 
     public abstract List<String> getAddressesByFirestationNumber(String firestationNumber);
+
+    public abstract int getStationNumberByAddress(String address);
+    public abstract List<Firestation> getFirestationByStationNumber(String stationNumber);
 }

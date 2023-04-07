@@ -1,7 +1,6 @@
 package com.openclassrooms.safetynet.controller;
 
-import com.openclassrooms.safetynet.model.CommunityEmailDTO;
-import com.openclassrooms.safetynet.model.PhoneAlertDTO;
+import com.openclassrooms.safetynet.model.*;
 import com.openclassrooms.safetynet.service.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,5 +26,15 @@ public class IndexController {
     @GetMapping("/phoneAlert")
     public List<PhoneAlertDTO> getPhoneAlertsByFirestation(@RequestParam("firestationNumber") String firestationNumber) {
         return commonService.getPhoneAlertByFirestation(firestationNumber);
+    }
+
+    @GetMapping("/fire")
+    public List<FireDTO> getFireDTOsByAddress(@RequestParam String address) {
+        return commonService.getFireDTOsByAddress(address);
+    }
+
+    @GetMapping("/personInfo")
+    public List<PersonInfoDTO> getPersonInfo(@RequestParam String firstName, @RequestParam String lastName) {
+        return commonService.getPersonInfo(firstName, lastName);
     }
 }

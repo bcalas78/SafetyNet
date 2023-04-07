@@ -22,4 +22,7 @@ public abstract class PersonRepository {
 
     public abstract List<Person> getPersonsByAddress(String address);
 
+    public abstract List<Person> getPersonByFirstNameAndLastName(String firstName, String lastName);
+
+    public abstract List<Person> getPersonByFirestationNumber(String stationNumber);
 }
