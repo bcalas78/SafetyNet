@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class IndexController {
@@ -36,5 +37,15 @@ public class IndexController {
     @GetMapping("/personInfo")
     public List<PersonInfoDTO> getPersonInfo(@RequestParam String firstName, @RequestParam String lastName) {
         return commonService.getPersonInfo(firstName, lastName);
+    }
+
+    @GetMapping("/childAlert")
+    public List<ChildAlertDTO> getChilAlertDTOByAddress(@RequestParam String address) {
+        return commonService.getChildrenByAddress(address);
+    }
+
+    @GetMapping("/flood/stations")
+    public Map<String, List<FloodDTO>> getFloodStations(@RequestParam List<String> stations ) {
+        return commonService.getFloodStations(stations);
     }
 }

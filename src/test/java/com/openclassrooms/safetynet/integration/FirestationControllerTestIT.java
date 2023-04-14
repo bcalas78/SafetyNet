@@ -20,8 +20,8 @@ public class FirestationControllerTestIT {
 
     @Test
     public void testGetFirestations() throws Exception {
-        mockMvc.perform(get("/firestation"))
+        mockMvc.perform(get("/firestation?stationNumber=1"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].address", is("1509 Culver St")));
+                .andExpect(jsonPath("$.persons[0].address", is("644 Gershwin Cir")));
     }
 }

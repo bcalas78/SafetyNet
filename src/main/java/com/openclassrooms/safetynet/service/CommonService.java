@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -118,7 +120,7 @@ public class CommonService {
             personDTO.setAddress(person.getAddress());
             personDTO.setPhone(person.getPhone());
 
-            MedicalRecord medicalRecord = new MedicalRecord();
+            MedicalRecord medicalRecord = medicalRecordRepository.findByFirstNameAndLastName(person.getFirstName(), person.getLastName());
             if (dateUtils.calculateAge(medicalRecord.getBirthdate()) <= 18) {
                 chilCount++;
             } else {
@@ -134,5 +136,56 @@ public class CommonService {
         firestationDTO.setChildCount(chilCount);
 
         return firestationDTO;
+   }
+
+   public List<ChildAlertDTO> getChildrenByAddress(String address) {
+        List<Person> persons = personRepository.getPersonsByAddress(address);
+        List<ChildAlertDTO> children = new ArrayList<>();
+
+        for (Person person : persons) {
+            MedicalRecord medicalRecord = medicalRecordRepository.findByFirstNameAndLastName(person.getFirstName(), person.getLastName());
+            if (dateUtils.calculateAge(medicalRecord.getBirthdate()) <= 18) {
+                ChildAlertDTO child = new ChildAlertDTO();
+                child.setFirstname(person.getFirstName());
+                child.setLastName(person.getLastName());
+                child.setAge(dateUtils.calculateAge(medicalRecord.getBirthdate()));
+
+                List<String> otherFamilyMembers = new ArrayList<>();
+                for (Person member : persons) {
+                    if (!member.equals(person)) {
+                        otherFamilyMembers.add(member.getFirstName() + " " + member.getLastName());
+                    }
+                }
+                child.setOtherFamilyMembers(otherFamilyMembers);
+
+                children.add(child);
+            }
+        }
+        return children;
+   }
+
+   public Map<String, List<FloodDTO>> getFloodStations(List<String> stationNumbers) {
+        Map<String, List<FloodDTO>> floodStationResult = new HashMap<>();
+        for (String stationNumber : stationNumbers) {
+            List<Person> persons = personRepository.getPersonByFirestationNumber(stationNumber);
+            for (Person person : persons) {
+                String address = person.getAddress();
+                if (!floodStationResult.containsKey(address)) {
+                    floodStationResult.put(address, new ArrayList<>());
+                }
+                FloodDTO floodDTO = new FloodDTO();
+                floodDTO.setFirstName(person.getFirstName());
+                floodDTO.setLastName(person.getLastName());
+                floodDTO.setPhone(person.getPhone());
+                MedicalRecord medicalRecord = medicalRecordRepository.findByFirstNameAndLastName(person.getFirstName(), person.getLastName());
+                if (medicalRecord != null) {
+                    floodDTO.setAge(dateUtils.calculateAge(medicalRecord.getBirthdate()));
+                    floodDTO.setMedications(medicalRecord.getMedications());
+                    floodDTO.setAllergies(medicalRecord.getAllergies());
+                }
+                floodStationResult.get(address).add(floodDTO);
+            }
+        }
+        return floodStationResult;
    }
 }

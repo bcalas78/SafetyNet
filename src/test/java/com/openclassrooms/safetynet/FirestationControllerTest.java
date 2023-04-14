@@ -1,6 +1,8 @@
 package com.openclassrooms.safetynet;
 
 import com.openclassrooms.safetynet.controller.FirestationController;
+import com.openclassrooms.safetynet.model.Data;
+import com.openclassrooms.safetynet.service.CommonService;
 import com.openclassrooms.safetynet.service.DatabaseManipulation;
 import com.openclassrooms.safetynet.service.FirestationService;
 import org.junit.jupiter.api.Test;
@@ -24,9 +26,15 @@ public class FirestationControllerTest {
     @MockBean
     private FirestationService firestationService;
 
+    @MockBean
+    private Data data;
+
+    @MockBean
+    private CommonService commonService;
+
     @Test
     public void testGetFirestations() throws Exception {
-        mockMvc.perform(get("/firestation"))
+        mockMvc.perform(get("/firestation?stationNumber=1"))
                 .andExpect(status().isOk());
     }
 }
