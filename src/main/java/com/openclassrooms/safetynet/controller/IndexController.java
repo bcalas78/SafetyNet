@@ -18,10 +18,9 @@ public class IndexController {
     @Autowired
     private CommonService commonService;
 
-    @GetMapping("/communityEmail")
-    public ResponseEntity<CommunityEmailDTO> getEmailsByCity(@RequestParam String city) throws IOException {
-        CommunityEmailDTO communityEmailDTO = commonService.getEmailsByCity(city);
-        return ResponseEntity.ok(communityEmailDTO);
+    @GetMapping("/childAlert")
+    public List<ChildAlertDTO> getChilAlertDTOByAddress(@RequestParam String address) {
+        return commonService.getChildrenByAddress(address);
     }
 
     @GetMapping("/phoneAlert")
@@ -34,18 +33,19 @@ public class IndexController {
         return commonService.getFireDTOsByAddress(address);
     }
 
+    @GetMapping("/flood/stations")
+    public Map<String, List<FloodDTO>> getFloodStations(@RequestParam List<String> stations ) {
+        return commonService.getFloodStations(stations);
+    }
+
     @GetMapping("/personInfo")
     public List<PersonInfoDTO> getPersonInfo(@RequestParam String firstName, @RequestParam String lastName) {
         return commonService.getPersonInfo(firstName, lastName);
     }
 
-    @GetMapping("/childAlert")
-    public List<ChildAlertDTO> getChilAlertDTOByAddress(@RequestParam String address) {
-        return commonService.getChildrenByAddress(address);
-    }
-
-    @GetMapping("/flood/stations")
-    public Map<String, List<FloodDTO>> getFloodStations(@RequestParam List<String> stations ) {
-        return commonService.getFloodStations(stations);
+    @GetMapping("/communityEmail")
+    public ResponseEntity<CommunityEmailDTO> getEmailsByCity(@RequestParam String city) throws IOException {
+        CommunityEmailDTO communityEmailDTO = commonService.getEmailsByCity(city);
+        return ResponseEntity.ok(communityEmailDTO);
     }
 }
