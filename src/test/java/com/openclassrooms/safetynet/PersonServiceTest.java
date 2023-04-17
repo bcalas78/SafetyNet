@@ -24,7 +24,7 @@ public class PersonServiceTest {
     private PersonService personService;
 
     @Test
-    public void testGetPersons() {
+    public void testGetPersons() throws Exception {
         Person person1 = new Person();
         person1.setFirstName("John");
         person1.setLastName("Doe");
