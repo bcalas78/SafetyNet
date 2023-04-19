@@ -34,80 +34,7 @@ public class CommonService {
     @Autowired
     private MedicalRecordRepository medicalRecordRepository;
 
-    public CommunityEmailDTO getEmailsByCity(String city) throws IOException {
-       Data communityData = objectMapper.readValue(new File("src/main/resources/data.json"), Data.class);
-       List<String> emails = communityData.getPersons().stream()
-               .filter(person -> person.getCity().equals(city))
-               .map(Person::getEmail)
-               .collect(Collectors.toList());
-
-       CommunityEmailDTO communityEmailDTO = new CommunityEmailDTO();
-       communityEmailDTO.setEmails(emails);
-       return communityEmailDTO;
-   }
-
-   public List<PhoneAlertDTO> getPhoneAlertByFirestation(String firestationNumber) {
-       List<String> addresses = firestationRepository.getAddressesByFirestationNumber(firestationNumber);
-
-       List<PhoneAlertDTO> phoneAlerts = new ArrayList<>();
-       for (String address : addresses) {
-           List<Person> persons = personRepository.getPersonsByAddress(address);
-           for(Person person : persons) {
-               PhoneAlertDTO phoneAlert = new PhoneAlertDTO();
-               //phoneAlert.setFirstName(person.getFirstName());
-               //phoneAlert.setLastName(person.getLastName());
-               phoneAlert.setPhone(person.getPhone());
-               phoneAlerts.add(phoneAlert);
-           }
-       }
-        return phoneAlerts;
-   }
-
-   public List<FireDTO> getFireDTOsByAddress(String address) {
-        List<FireDTO> fireDTOS = new ArrayList<>();
-        int stationNumber = firestationRepository.getStationNumberByAddress(address);
-        if (stationNumber != -1) {
-            List<Person> personsAtAddress = personRepository.getPersonsByAddress(address);
-            for (Person person : personsAtAddress) {
-                FireDTO fireDTO = new FireDTO();
-                fireDTO.setFirstName(person.getFirstName());
-                fireDTO.setLastName(person.getLastName());
-                fireDTO.setPhone(person.getPhone());
-                MedicalRecord medicalRecord = medicalRecordRepository.findByFirstNameAndLastName(person.getFirstName(), person.getLastName());
-                if (medicalRecord != null) {
-                    fireDTO.setAge(dateUtils.calculateAge(medicalRecord.getBirthdate()));
-                    fireDTO.setMedications(medicalRecord.getMedications());
-                    fireDTO.setAllergies(medicalRecord.getAllergies());
-                }
-                fireDTO.setStationNumber(stationNumber);
-                fireDTOS.add(fireDTO);
-            }
-        }
-        return fireDTOS;
-   }
-
-   public List<PersonInfoDTO> getPersonInfo(String firstName, String lastName) {
-       List<PersonInfoDTO> personInfoDTOList = new ArrayList<>();
-
-       List<Person> personByFirstNameAndLastName = personRepository.getPersonByFirstNameAndLastName(firstName, lastName);
-       for (Person person : personByFirstNameAndLastName) {
-           PersonInfoDTO personInfoDTO = new PersonInfoDTO();
-           personInfoDTO.setFirstName(person.getFirstName());
-           personInfoDTO.setLastName(person.getLastName());
-           personInfoDTO.setAddress(person.getAddress());
-           personInfoDTO.setEmail(person.getEmail());
-           MedicalRecord medicalRecord = medicalRecordRepository.findByFirstNameAndLastName(person.getFirstName(), person.getLastName());
-           if (medicalRecord != null) {
-               personInfoDTO.setAge(dateUtils.calculateAge(medicalRecord.getBirthdate()));
-               personInfoDTO.setMedications(medicalRecord.getMedications());
-               personInfoDTO.setAllergies(medicalRecord.getAllergies());
-           }
-           personInfoDTOList.add(personInfoDTO);
-       }
-       return personInfoDTOList;
-   }
-
-   public FirestationDTO getPersonsByFirestationNumber(String stationNumber) {
+    public FirestationDTO getPersonsByFirestationNumber(String stationNumber) {
         List<Person> persons = personRepository.getPersonByFirestationNumber(stationNumber);
         int adultCount = 0;
         int chilCount = 0;
@@ -136,9 +63,9 @@ public class CommonService {
         firestationDTO.setChildCount(chilCount);
 
         return firestationDTO;
-   }
+    }
 
-   public List<ChildAlertDTO> getChildrenByAddress(String address) {
+    public List<ChildAlertDTO> getChildrenByAddress(String address) {
         List<Person> persons = personRepository.getPersonsByAddress(address);
         List<ChildAlertDTO> children = new ArrayList<>();
 
@@ -162,9 +89,47 @@ public class CommonService {
             }
         }
         return children;
-   }
+    }
 
-   public Map<String, List<FloodDTO>> getFloodStations(List<String> stationNumbers) {
+    public List<PhoneAlertDTO> getPhoneAlertByFirestation(String firestationNumber) {
+        List<String> addresses = firestationRepository.getAddressesByFirestationNumber(firestationNumber);
+
+        List<PhoneAlertDTO> phoneAlerts = new ArrayList<>();
+        for (String address : addresses) {
+            List<Person> persons = personRepository.getPersonsByAddress(address);
+            for(Person person : persons) {
+                PhoneAlertDTO phoneAlert = new PhoneAlertDTO();
+                phoneAlert.setPhone(person.getPhone());
+                phoneAlerts.add(phoneAlert);
+            }
+        }
+        return phoneAlerts;
+    }
+
+    public List<FireDTO> getFireDTOsByAddress(String address) {
+        List<FireDTO> fireDTOS = new ArrayList<>();
+        int stationNumber = firestationRepository.getStationNumberByAddress(address);
+        if (stationNumber != -1) {
+            List<Person> personsAtAddress = personRepository.getPersonsByAddress(address);
+            for (Person person : personsAtAddress) {
+                FireDTO fireDTO = new FireDTO();
+                fireDTO.setFirstName(person.getFirstName());
+                fireDTO.setLastName(person.getLastName());
+                fireDTO.setPhone(person.getPhone());
+                MedicalRecord medicalRecord = medicalRecordRepository.findByFirstNameAndLastName(person.getFirstName(), person.getLastName());
+                if (medicalRecord != null) {
+                    fireDTO.setAge(dateUtils.calculateAge(medicalRecord.getBirthdate()));
+                    fireDTO.setMedications(medicalRecord.getMedications());
+                    fireDTO.setAllergies(medicalRecord.getAllergies());
+                }
+                fireDTO.setStationNumber(stationNumber);
+                fireDTOS.add(fireDTO);
+            }
+        }
+        return fireDTOS;
+    }
+
+    public Map<String, List<FloodDTO>> getFloodStations(List<String> stationNumbers) {
         Map<String, List<FloodDTO>> floodStationResult = new HashMap<>();
         for (String stationNumber : stationNumbers) {
             List<Person> persons = personRepository.getPersonByFirestationNumber(stationNumber);
@@ -187,5 +152,38 @@ public class CommonService {
             }
         }
         return floodStationResult;
+    }
+
+    public List<PersonInfoDTO> getPersonInfo(String firstName, String lastName) {
+        List<PersonInfoDTO> personInfoDTOList = new ArrayList<>();
+
+        List<Person> personByFirstNameAndLastName = personRepository.getPersonByFirstNameAndLastName(firstName, lastName);
+        for (Person person : personByFirstNameAndLastName) {
+            PersonInfoDTO personInfoDTO = new PersonInfoDTO();
+            personInfoDTO.setFirstName(person.getFirstName());
+            personInfoDTO.setLastName(person.getLastName());
+            personInfoDTO.setAddress(person.getAddress());
+            personInfoDTO.setEmail(person.getEmail());
+            MedicalRecord medicalRecord = medicalRecordRepository.findByFirstNameAndLastName(person.getFirstName(), person.getLastName());
+            if (medicalRecord != null) {
+                personInfoDTO.setAge(dateUtils.calculateAge(medicalRecord.getBirthdate()));
+                personInfoDTO.setMedications(medicalRecord.getMedications());
+                personInfoDTO.setAllergies(medicalRecord.getAllergies());
+            }
+            personInfoDTOList.add(personInfoDTO);
+        }
+        return personInfoDTOList;
+    }
+
+    public CommunityEmailDTO getEmailsByCity(String city) throws IOException {
+       Data communityData = objectMapper.readValue(new File("src/main/resources/data.json"), Data.class);
+       List<String> emails = communityData.getPersons().stream()
+               .filter(person -> person.getCity().equals(city))
+               .map(Person::getEmail)
+               .collect(Collectors.toList());
+
+       CommunityEmailDTO communityEmailDTO = new CommunityEmailDTO();
+       communityEmailDTO.setEmails(emails);
+       return communityEmailDTO;
    }
 }
