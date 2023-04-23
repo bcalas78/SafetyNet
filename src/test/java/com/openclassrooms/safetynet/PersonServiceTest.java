@@ -18,10 +18,10 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 public class PersonServiceTest {
     @Autowired
-    private PersonRepository personRepository;
+    private PersonService personService;
 
     @Autowired
-    private PersonService personService;
+    private PersonRepository personRepository;
 
     @Test
     public void testGetPersons() throws Exception {

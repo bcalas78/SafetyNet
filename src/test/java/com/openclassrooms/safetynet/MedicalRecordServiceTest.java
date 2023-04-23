@@ -1,7 +1,6 @@
 package com.openclassrooms.safetynet;
 
 import com.openclassrooms.safetynet.model.MedicalRecord;
-import com.openclassrooms.safetynet.model.Person;
 import com.openclassrooms.safetynet.repository.MedicalRecordRepository;
 import com.openclassrooms.safetynet.service.MedicalRecordService;
 import org.junit.jupiter.api.Test;
