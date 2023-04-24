@@ -7,19 +7,19 @@ import com.openclassrooms.safetynet.repository.MedicalRecordRepository;
 import com.openclassrooms.safetynet.repository.PersonRepository;
 import com.openclassrooms.safetynet.service.CommonService;
 import com.openclassrooms.safetynet.utils.DateUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -28,6 +28,9 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
 public class CommonServiceTest {
+
+    private static final Logger logger = LogManager.getLogger(CommonService.class);
+
     @InjectMocks
     private CommonService commonService;
 
@@ -94,6 +97,21 @@ public class CommonServiceTest {
         verify(personRepository, times(1)).getPersonByFirestationNumber(stationNumber);
         verify(medicalRecordRepository, times(1)).findByFirstNameAndLastName("John", "Doe");
         verify(medicalRecordRepository, times(1)).findByFirstNameAndLastName("Jane", "Doe");
+    }
+
+    @Test
+    public void testGetPersonsByFirestationNumberCatch() throws Exception {
+        String stationNumber = "1";
+        Mockito.when(commonService.getPersonsByFirestationNumber(stationNumber)).thenThrow(new RuntimeException("Mocked Exception"));
+
+        FirestationDTO result = null;
+        try {
+            result = commonService.getPersonsByFirestationNumber(stationNumber);
+        } catch (Exception e) {
+            Mockito.verify(commonService).getPersonsByFirestationNumber(stationNumber);
+            Assert.assertEquals("Cannot get persons by firestation number", e.getMessage());
+        }
+        Assert.assertNull("Result should be null", result);
     }
 
     @Test
@@ -186,6 +204,21 @@ public class CommonServiceTest {
     }
 
     @Test
+    public void testGetChildrenByAddressCatch() throws Exception {
+        String address = "98 Test St";
+        Mockito.when(commonService.getChildrenByAddress(address)).thenThrow(new RuntimeException("Mocked Exception"));
+
+        List<ChildAlertDTO> result = null;
+        try {
+            result = commonService.getChildrenByAddress(address);
+        } catch (Exception e) {
+            Mockito.verify(commonService).getChildrenByAddress(address);
+            Assert.assertEquals("Cannot get children by address", e.getMessage());
+        }
+        Assert.assertNull("Result should be null", result);
+    }
+
+    @Test
     public void testGetPhoneAlertByFirestation() throws Exception {
         String firestationNumber = "1";
         List<String> addresses = Arrays.asList("123 Main St", "456 Elm St");
@@ -221,6 +254,21 @@ public class CommonServiceTest {
 
         PhoneAlertDTO phoneAlert2 = result.get(1);
         assertEquals("444-555-6666", phoneAlert2.getPhone());
+    }
+
+    @Test
+    public void testGetPhoneAlertByFirestationCatch() throws Exception {
+        String firestationNumber = "1";
+        Mockito.when(commonService.getPhoneAlertByFirestation(firestationNumber)).thenThrow(new RuntimeException("Mocked Exception"));
+
+        List<PhoneAlertDTO> result = null;
+        try {
+            result = commonService.getPhoneAlertByFirestation(firestationNumber);
+        } catch (Exception e) {
+            Mockito.verify(commonService).getPhoneAlertByFirestation(firestationNumber);
+            Assert.assertEquals("Cannot get phone alert by firestation", e.getMessage());
+        }
+        Assert.assertNull("Result should be null", result);
     }
 
     @Test
@@ -278,6 +326,21 @@ public class CommonServiceTest {
         assertEquals("444-555-6666", fireDTO2.getPhone());
         assertEquals(33, fireDTO2.getAge());
         assertEquals(stationNumber, fireDTO2.getStationNumber());
+    }
+
+    @Test
+    public void testGetFireDTOsByAddressCatch() throws Exception {
+        String address = "123 Main St";
+        Mockito.when(commonService.getFireDTOsByAddress(address)).thenThrow(new RuntimeException("Mocked Exception"));
+
+        List<FireDTO> result = null;
+        try {
+            result = commonService.getFireDTOsByAddress(address);
+        } catch (Exception e) {
+            Mockito.verify(commonService).getFireDTOsByAddress(address);
+            Assert.assertEquals("Cannot get fire DTOs by address", e.getMessage());
+        }
+        Assert.assertNull("Result should be null", result);
     }
 
     @Test
@@ -364,7 +427,22 @@ public class CommonServiceTest {
     }
 
     @Test
-    public void testGetPersonInfo() {
+    public void testGetFloodStationsCatch() throws Exception {
+        List<String> stationNumbers = Arrays.asList("1","3");
+        Mockito.when(commonService.getFloodStations(stationNumbers)).thenThrow(new RuntimeException("Mocked Exception"));
+
+        Map<String, List<FloodDTO>> result = null;
+        try {
+            result = commonService.getFloodStations(stationNumbers);
+        } catch (Exception e) {
+            Mockito.verify(commonService).getFloodStations(stationNumbers);
+            Assert.assertEquals("Cannot get flood stations", e.getMessage());
+        }
+        Assert.assertNull("Result should be null", result);
+    }
+
+    @Test
+    public void testGetPersonInfo() throws Exception {
         // Préparation des données de test
         String firstName = "Kevin";
         String lastName = "Volland";
@@ -406,7 +484,23 @@ public class CommonServiceTest {
     }
 
     @Test
-    public void testGetEmailsByCity() throws IOException {
+    public void testGetPersonInfoCatch() throws Exception {
+        String firstName = "Ludovic";
+        String lastName = "Giuly";
+        Mockito.when(commonService.getPersonInfo(firstName,lastName)).thenThrow(new RuntimeException("Mocked Exception"));
+
+        List<PersonInfoDTO> result = null;
+        try {
+            result = commonService.getPersonInfo(firstName,lastName);
+        } catch (Exception e) {
+            Mockito.verify(commonService).getPersonInfo(firstName,lastName);
+            Assert.assertEquals("Cannot get person info", e.getMessage());
+        }
+        Assert.assertNull("Result should be null", result);
+    }
+
+    @Test
+    public void testGetEmailsByCity() throws Exception {
         String city = "London";
 
         Person person1 = new Person();
@@ -447,6 +541,21 @@ public class CommonServiceTest {
         assertNotNull(result);
         List<String> expectedEmails = Arrays.asList("johnsmith@email.com", "janesmith@email.com");
         assertEquals(expectedEmails, result.getEmails());
+    }
+
+    @Test
+    public void testGetEmailsByCityCatch() throws Exception {
+        String city = "Prague";
+        Mockito.when(commonService.getEmailsByCity(city)).thenThrow(new RuntimeException("Mocked Exception"));
+
+        CommunityEmailDTO result = null;
+        try {
+            result = commonService.getEmailsByCity(city);
+        } catch (Exception e) {
+            Mockito.verify(commonService).getEmailsByCity(city);
+            Assert.assertEquals("Cannot get emails by city", e.getMessage());
+        }
+        Assert.assertNull("Result should be null", result);
     }
 
 }

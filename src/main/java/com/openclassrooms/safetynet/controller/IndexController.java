@@ -18,7 +18,7 @@ import java.util.Map;
 @RestController
 public class IndexController {
 
-    private static final Logger logger = LogManager.getLogger(PersonService.class);
+    private static final Logger logger = LogManager.getLogger(IndexController.class);
 
     @Autowired
     private CommonService commonService;
@@ -26,61 +26,67 @@ public class IndexController {
     @GetMapping("/childAlert")
     public List<ChildAlertDTO> getChilAlertDTOByAddress(@RequestParam String address) {
         try {
-            logger.info("Request Get: Get childAlert with success.");
+            logger.info("Request GET: Get childAlert with success.");
+            return commonService.getChildrenByAddress(address);
         } catch (Exception e) {
             logger.error("Request Get childAlert cannot succeed", e);
+            return null;
         }
-        return commonService.getChildrenByAddress(address);
     }
 
     @GetMapping("/phoneAlert")
     public List<PhoneAlertDTO> getPhoneAlertsByFirestation(@RequestParam("firestation") String firestationNumber) {
         try {
-            logger.info("Request Get: Get phoneAlert with success.");
+            logger.info("Request GET: Get phoneAlert with success.");
+            return commonService.getPhoneAlertByFirestation(firestationNumber);
         } catch (Exception e) {
             logger.error("Request Get phoneAlert cannot succeed", e);
+            return null;
         }
-        return commonService.getPhoneAlertByFirestation(firestationNumber);
     }
 
     @GetMapping("/fire")
     public List<FireDTO> getFireDTOsByAddress(@RequestParam String address) {
         try {
-            logger.info("Request Get: Get fire with success.");
+            logger.info("Request GET: Get fire with success.");
+            return commonService.getFireDTOsByAddress(address);
         } catch (Exception e) {
             logger.error("Request Get fire cannot succeed", e);
+            return null;
         }
-        return commonService.getFireDTOsByAddress(address);
     }
 
     @GetMapping("/flood/stations")
     public Map<String, List<FloodDTO>> getFloodStations(@RequestParam List<String> stations ) {
         try {
-            logger.info("Request Get: Get flood/stations with success.");
+            logger.info("Request GET: Get flood/stations with success.");
+            return commonService.getFloodStations(stations);
         } catch (Exception e) {
             logger.error("Request Get flood/stations cannot succeed", e);
+            return null;
         }
-        return commonService.getFloodStations(stations);
     }
 
     @GetMapping("/personInfo")
     public List<PersonInfoDTO> getPersonInfo(@RequestParam String firstName, @RequestParam String lastName) {
         try {
-            logger.info("Request Get: Get personInfo with success.");
+            logger.info("Request GET: Get personInfo with success.");
+            return commonService.getPersonInfo(firstName, lastName);
         } catch (Exception e) {
             logger.error("Request Get personInfo cannot succeed", e);
+            return null;
         }
-        return commonService.getPersonInfo(firstName, lastName);
     }
 
     @GetMapping("/communityEmail")
-    public ResponseEntity<CommunityEmailDTO> getEmailsByCity(@RequestParam String city) throws IOException {
-        CommunityEmailDTO communityEmailDTO = commonService.getEmailsByCity(city);
+    public ResponseEntity<CommunityEmailDTO> getEmailsByCity(@RequestParam String city) throws Exception {
         try {
-            logger.info("Request Get: Get communityEmail with success.");
+            logger.info("Request GET: Get communityEmail with success.");
+            CommunityEmailDTO communityEmailDTO = commonService.getEmailsByCity(city);
+            return ResponseEntity.ok(communityEmailDTO);
         } catch (Exception e) {
             logger.error("Request Get communityEmail cannot succeed", e);
+            return null;
         }
-        return ResponseEntity.ok(communityEmailDTO);
     }
 }

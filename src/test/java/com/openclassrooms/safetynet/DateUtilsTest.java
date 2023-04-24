@@ -2,6 +2,7 @@ package com.openclassrooms.safetynet;
 
 import com.openclassrooms.safetynet.utils.DateUtils;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
@@ -12,6 +13,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 public class DateUtilsTest {
+
+    @InjectMocks
+    private DateUtils dateUtils;
 
     @Test
     public void testCalculateAge() throws Exception {
@@ -31,5 +35,15 @@ public class DateUtilsTest {
 
         int actualAge = DateUtils.calculateAge(birthDate);
         assertEquals(0, actualAge);
+    }
+
+    @Test
+    public void testCalculateAgeCatch() throws Exception {
+        String birthdate = "invalid_date";
+        int expectedAge = -1;
+
+        int actualAge = dateUtils.calculateAge(birthdate);
+
+        assertEquals(expectedAge, actualAge);
     }
 }

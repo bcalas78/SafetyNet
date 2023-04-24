@@ -22,10 +22,11 @@ public class PersonService {
     public List<Person> getPersons() throws Exception {
         try {
             logger.debug("Get persons with success.");
+            return personRepository.getPersons();
         } catch (Exception e) {
             logger.error("Cannot get List of persons", e);
+            return null;
         }
-        return personRepository.getPersons();
     }
 
     public void addPerson(Person person) throws Exception {
@@ -47,18 +48,19 @@ public class PersonService {
     }
 
     public Person updatePerson(Person updatedPerson) throws Exception {
-        Person personToUpdate = personRepository.findByFirstNameAndLastName(updatedPerson.getFirstName(), updatedPerson.getLastName());
-        personToUpdate.setAddress(updatedPerson.getAddress());
-        personToUpdate.setCity(updatedPerson.getCity());
-        personToUpdate.setZip(updatedPerson.getZip());
-        personToUpdate.setPhone(updatedPerson.getPhone());
-        personToUpdate.setEmail(updatedPerson.getEmail());
         try {
             logger.debug("Updated person with success.");
+            Person personToUpdate = personRepository.findByFirstNameAndLastName(updatedPerson.getFirstName(), updatedPerson.getLastName());
+            personToUpdate.setAddress(updatedPerson.getAddress());
+            personToUpdate.setCity(updatedPerson.getCity());
+            personToUpdate.setZip(updatedPerson.getZip());
+            personToUpdate.setPhone(updatedPerson.getPhone());
+            personToUpdate.setEmail(updatedPerson.getEmail());
+            return personRepository.saveAndUpdate(personToUpdate);
         } catch (Exception e) {
             logger.error("Cannot update person", e);
+            return null;
         }
-        return personRepository.saveAndUpdate(personToUpdate);
     }
 
 }

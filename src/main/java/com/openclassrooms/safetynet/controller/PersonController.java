@@ -23,28 +23,30 @@ public class PersonController {
     @GetMapping
     public List<Person> personList() throws Exception {
         try {
-            logger.info("Request Get: Get persons with success.");
+            logger.info("Request GET: Get personList with success.");
+            return personService.getPersons();
         } catch (Exception e) {
-            logger.error("Request Get Person cannot succeed", e);
+            logger.error("Request Get personList cannot succeed", e);
+            return null;
         }
-        return personService.getPersons();
     }
 
    @PostMapping
     public ResponseEntity<Person> addPerson(@RequestBody Person person) throws Exception {
-        personService.addPerson(person);
        try {
-           logger.info("Request Post: Person created with success.");
+           logger.info("Request POST: person created with success.");
+           personService.addPerson(person);
+           return new ResponseEntity<Person>(person,HttpStatus.CREATED);
        } catch (Exception e) {
            logger.error("Cannot created person", e);
+           return null;
        }
-        return new ResponseEntity<Person>(person,HttpStatus.CREATED);
    }
 
    @DeleteMapping
     public void deletePerson(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) throws Exception {
         try {
-            logger.info("Request Delete: deleted person with success.");
+            logger.info("Request DELETE: deleted person with success.");
             personService.deletePerson(firstName, lastName);
         } catch (Exception e) {
             logger.error("Cannot delete person", e);
@@ -53,13 +55,13 @@ public class PersonController {
 
     @PutMapping
     public ResponseEntity<Person> updatePerson(@RequestBody Person updatedPerson) throws Exception{
-        Person savedPerson = personService.updatePerson(updatedPerson);
         try {
-            logger.info("Request Update: updated person with success.");
+            logger.info("Request PUT: updated person with success.");
+            Person savedPerson = personService.updatePerson(updatedPerson);
+            return ResponseEntity.ok(savedPerson);
         } catch (Exception e) {
             logger.error("Cannot update person", e);
+            return null;
         }
-        return ResponseEntity.ok(savedPerson);
     }
-
 }
