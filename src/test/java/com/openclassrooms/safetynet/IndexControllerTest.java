@@ -3,7 +3,6 @@ package com.openclassrooms.safetynet;
 import com.openclassrooms.safetynet.controller.IndexController;
 import com.openclassrooms.safetynet.model.*;
 import com.openclassrooms.safetynet.service.CommonService;
-import com.openclassrooms.safetynet.service.DatabaseManipulation;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -28,9 +27,6 @@ public class IndexControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @MockBean
-    private DatabaseManipulation databaseManipulation;
 
     @InjectMocks
     private IndexController indexController;

@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -63,12 +62,10 @@ public class CommonService {
 
                 personDTOs.add(personDTO);
             }
-
             FirestationDTO firestationDTO = new FirestationDTO();
             firestationDTO.setPersons(personDTOs);
             firestationDTO.setAdultCount(adultCount);
             firestationDTO.setChildCount(chilCount);
-
             return firestationDTO;
         } catch (Exception e) {
             logger.error("Cannot get persons by firestation number", e);

@@ -3,26 +3,31 @@ package com.openclassrooms.safetynet;
 import com.openclassrooms.safetynet.model.Firestation;
 import com.openclassrooms.safetynet.repository.FirestationRepository;
 import com.openclassrooms.safetynet.service.FirestationService;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
 public class FirestationServiceTest {
 
-    @Autowired
+    @InjectMocks
     private FirestationService firestationService;
 
-    @Autowired
+    @Mock
     private FirestationRepository firestationRepository;
 
     @Test
@@ -35,41 +40,114 @@ public class FirestationServiceTest {
         firestation2.setStation("2");
         firestation2.setAddress("1 Main St");
 
-        firestationService.addFirestation(firestation1);
-        firestationService.addFirestation(firestation2);
+        List<Firestation> firestations = Arrays.asList(firestation1, firestation2);
 
-        List<Firestation> firestations = firestationService.getFirestations();
+        when(firestationRepository.getFirestations()).thenReturn(firestations);
 
+        List<Firestation> actualFirestations = firestationService.getFirestations();
+
+        Assert.assertEquals(firestations, actualFirestations);
+        Assert.assertEquals(2, firestations.size());
         assertThat(firestations).contains(firestation1, firestation2);
+
+        verify(firestationRepository, times(1)).getFirestations();
+    }
+
+    @Test
+    public void testGetFirestationsCatch() throws Exception {
+        Mockito.when(firestationRepository.getFirestations()).thenThrow(new RuntimeException("Mocked Exception"));
+
+        List<Firestation> result = null;
+        try {
+            result = firestationService.getFirestations();
+        } catch (Exception e) {
+            Mockito.verify(firestationRepository).save(result);
+            Mockito.verify(firestationService).getFirestations();
+            Assert.assertEquals("Cannot get List of firestations", e.getMessage());
+        }
+
+        Assert.assertNull("Result should be null", result);
+    }
+
+    @Test
+    public void testAddFirestation() throws Exception {
+        Firestation firestation = new Firestation();
+        firestation.setStation("1");
+        firestation.setAddress("1000 King Road");
+
+        doNothing().when(firestationRepository).addFirestation(firestation);
+        firestationService.addFirestation(firestation);
+        verify(firestationRepository, times(1)).addFirestation(firestation);
+    }
+
+    @Test
+    public void testAddFirestationCatch() throws Exception {
+        Firestation firestation = new Firestation();
+        firestation.setStation("1");
+        firestation.setAddress("1000 King Road");
+
+        doThrow(new RuntimeException()).when(firestationRepository).addFirestation(firestation);
+        firestationService.addFirestation(firestation);
     }
 
     @Test
     public void testDeleteFirestation() throws Exception {
-        Firestation firestationToDelete = new Firestation();
-        firestationToDelete.setStation("1");
-        firestationToDelete.setAddress("2500 Queen St");
-        firestationService.addFirestation(firestationToDelete);
+        String station = "2";
+        String address = "123 Main St";
 
-        firestationService.deleteFirestation("1", "2500 Queen St");
-        Firestation deletedFirestation = firestationRepository.findByAddress("2500 Queen St");
+        firestationService.deleteFirestation(station, address);
 
-        assertNull(deletedFirestation);
+        verify(firestationRepository, times(1)).deleteFirestation(station, address);
+    }
+
+    @Test
+    public void testDeleteFirestationCatch() throws Exception {
+        String station = "2";
+        String address = "123 Main St";
+
+        Mockito.doThrow(new RuntimeException("Cannot Delete firestation")).when(firestationRepository).deleteFirestation(station, address);
+
+        try {
+            firestationService.deleteFirestation(station, address);
+        } catch (Exception e) {
+            Assert.assertEquals("Cannot Delete firestation", e.getMessage());
+        }
     }
 
     @Test
     public void testUpdateFirestation() throws Exception {
-        Firestation firestationToUpdate = new Firestation();
-        firestationToUpdate.setStation("2");
-        firestationToUpdate.setAddress("500 Main Road");
-        firestationService.addFirestation(firestationToUpdate);
+        Firestation existingFirestation = new Firestation();
+        existingFirestation.setStation("2");
+        existingFirestation.setAddress("500 Main Road");
+
+        when(firestationRepository.findByAddress("500 Main Road")).thenReturn(existingFirestation);
 
         Firestation updatedFirestation = new Firestation();
         updatedFirestation.setStation("3");
         updatedFirestation.setAddress("500 Main Road");
 
-        firestationService.updateFirestation(updatedFirestation);
+        when(firestationRepository.saveAndUpdate(existingFirestation)).thenReturn(updatedFirestation);
 
-        Firestation retrievedFirestation = firestationRepository.findByAddress("500 Main Road");
-        assertEquals(updatedFirestation.getStation(), retrievedFirestation.getStation());
+        Firestation result = firestationService.updateFirestation(updatedFirestation);
+
+        Assert.assertEquals(updatedFirestation, result);
+
+        verify(firestationRepository).saveAndUpdate(existingFirestation);
+    }
+
+    @Test
+    void testUpdateFirestationCatch() throws Exception {
+        String station = "3";
+        String address = "300 Test St";
+        String errorMessage = "Cannot update firestation";
+
+        when(firestationRepository.findByAddress(address)).thenThrow(new RuntimeException(errorMessage));
+
+        Firestation updatedFirestation = new Firestation();
+        updatedFirestation.setAddress(address);
+
+        Firestation result = firestationService.updateFirestation(updatedFirestation);
+
+        assertNull(result);
     }
 }

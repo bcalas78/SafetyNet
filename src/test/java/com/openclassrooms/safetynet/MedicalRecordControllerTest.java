@@ -156,5 +156,4 @@ public class MedicalRecordControllerTest {
             Assert.assertEquals("Cannot delete medicalRecord", e.getMessage());
         }
     }
-
 }

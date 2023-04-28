@@ -1,11 +1,9 @@
 package com.openclassrooms.safetynet.controller;
 
-import com.openclassrooms.safetynet.model.Data;
 import com.openclassrooms.safetynet.model.Firestation;
 import com.openclassrooms.safetynet.model.FirestationDTO;
 import com.openclassrooms.safetynet.service.CommonService;
 import com.openclassrooms.safetynet.service.FirestationService;
-import com.openclassrooms.safetynet.service.PersonService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +15,6 @@ import org.springframework.web.bind.annotation.*;
 public class FirestationController {
 
     private static final Logger logger = LogManager.getLogger(FirestationController.class);
-
-    @Autowired
-    private Data data;
 
     @Autowired
     private FirestationService firestationService;

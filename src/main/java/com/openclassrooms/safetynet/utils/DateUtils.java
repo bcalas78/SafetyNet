@@ -1,6 +1,5 @@
 package com.openclassrooms.safetynet.utils;
 
-import com.openclassrooms.safetynet.service.PersonService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

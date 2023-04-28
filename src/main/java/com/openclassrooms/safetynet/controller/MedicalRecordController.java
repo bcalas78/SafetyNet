@@ -1,9 +1,7 @@
 package com.openclassrooms.safetynet.controller;
 
 import com.openclassrooms.safetynet.model.MedicalRecord;
-import com.openclassrooms.safetynet.model.Person;
 import com.openclassrooms.safetynet.service.MedicalRecordService;
-import com.openclassrooms.safetynet.service.PersonService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +28,6 @@ public class MedicalRecordController {
             logger.error("Request Get medicalRecordList cannot succeed", e);
             return null;
         }
-
     }
 
     @PostMapping("/medicalRecord")
@@ -43,7 +40,6 @@ public class MedicalRecordController {
             logger.error("Cannot created medicalRecord", e);
             return null;
         }
-
     }
 
     @DeleteMapping("/medicalRecord")
@@ -66,6 +62,5 @@ public class MedicalRecordController {
             logger.error("Cannot update medicalRecord", e);
             return null;
         }
-
     }
 }

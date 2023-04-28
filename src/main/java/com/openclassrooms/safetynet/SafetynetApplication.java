@@ -32,7 +32,6 @@ public class SafetynetApplication {
 		} catch (Exception e) {
 			logger.error("Cannot read JSON file", e);
 		}
-
 		databaseManipulation.init();
 	}
 }

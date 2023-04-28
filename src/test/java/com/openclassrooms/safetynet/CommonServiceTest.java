@@ -6,9 +6,6 @@ import com.openclassrooms.safetynet.repository.FirestationRepository;
 import com.openclassrooms.safetynet.repository.MedicalRecordRepository;
 import com.openclassrooms.safetynet.repository.PersonRepository;
 import com.openclassrooms.safetynet.service.CommonService;
-import com.openclassrooms.safetynet.utils.DateUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,9 +25,6 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
 public class CommonServiceTest {
-
-    private static final Logger logger = LogManager.getLogger(CommonService.class);
-
     @InjectMocks
     private CommonService commonService;
 
@@ -45,9 +39,6 @@ public class CommonServiceTest {
 
     @Mock
     private ObjectMapper objectMapper;
-
-    @Mock
-    private DateUtils dateUtils;
 
     @Test
     public void testGetPersonsByFirestationNumber() throws Exception {

@@ -5,7 +5,6 @@ import com.openclassrooms.safetynet.model.Data;
 import com.openclassrooms.safetynet.repository.FirestationRepository;
 import com.openclassrooms.safetynet.repository.MedicalRecordRepository;
 import com.openclassrooms.safetynet.repository.PersonRepository;
-import lombok.extern.flogger.Flogger;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,10 +35,9 @@ public class DatabaseManipulation {
             firestationRepository.save(data.getFirestations());
             personRepository.save(data.getPersons());
             medicalRecordRepository.save(data.getMedicalrecords());
-            logger.info("Safetynet data" + data);
+            logger.info("Safetynet data " + data);
         } catch (Exception e) {
             logger.error("Cannot init Safetynet Application");
         }
     }
-
 }

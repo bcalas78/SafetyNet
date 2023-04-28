@@ -2,11 +2,9 @@ package com.openclassrooms.safetynet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openclassrooms.safetynet.controller.FirestationController;
-import com.openclassrooms.safetynet.model.Data;
 import com.openclassrooms.safetynet.model.Firestation;
 import com.openclassrooms.safetynet.model.FirestationDTO;
 import com.openclassrooms.safetynet.service.CommonService;
-import com.openclassrooms.safetynet.service.DatabaseManipulation;
 import com.openclassrooms.safetynet.service.FirestationService;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -37,13 +35,7 @@ public class FirestationControllerTest {
     private FirestationController firestationController;
 
     @MockBean
-    private DatabaseManipulation databaseManipulation;
-
-    @MockBean
     private FirestationService firestationService;
-
-    @MockBean
-    private Data data;
 
     @MockBean
     private CommonService commonService;

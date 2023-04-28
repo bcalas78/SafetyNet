@@ -2,7 +2,6 @@ package com.openclassrooms.safetynet.repository;
 
 import com.openclassrooms.safetynet.model.Firestation;
 import com.openclassrooms.safetynet.model.Person;
-import com.openclassrooms.safetynet.model.PersonDTO;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

@@ -1,7 +1,6 @@
 package com.openclassrooms.safetynet.model;
 
 import lombok.Data;
-import org.w3c.dom.stylesheets.LinkStyle;
 
 import java.util.List;
 
@@ -14,5 +13,4 @@ public class PersonInfoDTO {
     private String email;
     private List<String> medications;
     private List<String> allergies;
-
 }

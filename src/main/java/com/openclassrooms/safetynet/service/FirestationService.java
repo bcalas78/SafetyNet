@@ -1,7 +1,6 @@
 package com.openclassrooms.safetynet.service;
 
 import com.openclassrooms.safetynet.model.Firestation;
-import com.openclassrooms.safetynet.model.Person;
 import com.openclassrooms.safetynet.repository.FirestationRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -35,7 +34,6 @@ public class FirestationService {
         } catch (Exception e) {
             logger.error("Cannot add firestation", e);
         }
-
     }
 
     public void deleteFirestation(String station, String address) throws Exception {
