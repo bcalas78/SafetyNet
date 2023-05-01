@@ -434,7 +434,6 @@ public class CommonServiceTest {
 
     @Test
     public void testGetPersonInfo() throws Exception {
-        // Préparation des données de test
         String firstName = "Kevin";
         String lastName = "Volland";
 
@@ -452,11 +451,11 @@ public class CommonServiceTest {
         medicalRecord1.setLastName("Volland");
         medicalRecord1.setBirthdate("07/30/1992");
 
-        when(personRepository.getPersonByFirstNameAndLastName(firstName, lastName)).thenReturn(Collections.singletonList(person1));
-        when(medicalRecordRepository.findByFirstNameAndLastName(firstName, lastName)).thenReturn(medicalRecord1);
-        //when(dateUtils.calculateAge(medicalRecord1.getBirthdate())).thenReturn(30);
+        when(personRepository.getPersonByFirstNameAndLastName("Kevin", "Volland")).thenReturn(Arrays.asList(person1));
+        when(personRepository.getPersons()).thenReturn(Arrays.asList(person1));
+        when(medicalRecordRepository.findByFirstNameAndLastName("Kevin", "Volland")).thenReturn(medicalRecord1);
 
-        List<PersonInfoDTO> result = commonService.getPersonInfo(firstName, lastName);
+        List<PersonInfoDTO> result = commonService.getPersonInfo("Kevin", "Volland");
 
         assertNotNull(result);
         assertEquals(1, result.size());
@@ -471,7 +470,6 @@ public class CommonServiceTest {
 
         verify(personRepository).getPersonByFirstNameAndLastName(firstName, lastName);
         verify(medicalRecordRepository).findByFirstNameAndLastName(firstName, lastName);
-        //verify(dateUtils).calculateAge(medicalRecord1.getBirthdate());
     }
 
     @Test

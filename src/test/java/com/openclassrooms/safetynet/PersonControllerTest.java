@@ -50,10 +50,10 @@ public class PersonControllerTest {
 
         List<Person> result = null;
         try {
-            result = personController.personList();
+            result = personController.getPersons();
         } catch (Exception e) {
             Mockito.verify(personService).getPersons();
-            Mockito.verify(personController).personList();
+            Mockito.verify(personController).getPersons();
             Assert.assertEquals("Request Get personList cannot succeed", e.getMessage());
         }
 

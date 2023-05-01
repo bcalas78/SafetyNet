@@ -196,21 +196,34 @@ public class CommonService {
 
             List<PersonInfoDTO> personInfoDTOList = new ArrayList<>();
 
+            List<Person> allPersons = personRepository.getPersons();
             List<Person> personByFirstNameAndLastName = personRepository.getPersonByFirstNameAndLastName(firstName, lastName);
-            for (Person person : personByFirstNameAndLastName) {
-                PersonInfoDTO personInfoDTO = new PersonInfoDTO();
-                personInfoDTO.setFirstName(person.getFirstName());
-                personInfoDTO.setLastName(person.getLastName());
-                personInfoDTO.setAddress(person.getAddress());
-                personInfoDTO.setEmail(person.getEmail());
-                MedicalRecord medicalRecord = medicalRecordRepository.findByFirstNameAndLastName(person.getFirstName(), person.getLastName());
-                if (medicalRecord != null) {
-                    personInfoDTO.setAge(dateUtils.calculateAge(medicalRecord.getBirthdate()));
-                    personInfoDTO.setMedications(medicalRecord.getMedications());
-                    personInfoDTO.setAllergies(medicalRecord.getAllergies());
+            List<Person> personsWithSameLastName = new ArrayList<>();
+
+            if (!personByFirstNameAndLastName.isEmpty()) {
+                String firstLastName = personByFirstNameAndLastName.get(0).getLastName();
+
+                for (Person person : allPersons) {
+                    if (person.getLastName().equals(firstLastName)) {
+                        personsWithSameLastName.add(person);
+                    }
                 }
-                personInfoDTOList.add(personInfoDTO);
             }
+                for (Person person : personsWithSameLastName) {
+                    PersonInfoDTO personInfoDTO = new PersonInfoDTO();
+                    personInfoDTO.setFirstName(person.getFirstName());
+                    personInfoDTO.setLastName(person.getLastName());
+                    personInfoDTO.setAddress(person.getAddress());
+                    personInfoDTO.setEmail(person.getEmail());
+                    MedicalRecord medicalRecord = medicalRecordRepository.findByFirstNameAndLastName(person.getFirstName(), person.getLastName());
+                    if (medicalRecord != null) {
+                        personInfoDTO.setAge(dateUtils.calculateAge(medicalRecord.getBirthdate()));
+                        personInfoDTO.setMedications(medicalRecord.getMedications());
+                        personInfoDTO.setAllergies(medicalRecord.getAllergies());
+                    }
+                    personInfoDTOList.add(personInfoDTO);
+                }
+
             return personInfoDTOList;
         } catch (Exception e) {
             logger.error("Cannot get person info", e);

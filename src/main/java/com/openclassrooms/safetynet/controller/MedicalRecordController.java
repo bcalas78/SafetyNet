@@ -20,7 +20,7 @@ public class MedicalRecordController {
     private MedicalRecordService medicalRecordService;
 
     @GetMapping("/medicalRecord")
-    public List<MedicalRecord> medicalRecordList() {
+    public List<MedicalRecord> getMedicalRecordList() {
         try {
             logger.info("Request GET: Get medicalRecordList with success.");
             return medicalRecordService.getMedicalRecords();

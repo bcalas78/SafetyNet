@@ -90,6 +90,4 @@ public class PersonJSONRepository extends PersonRepository {
         }
         return personByFirestationNumber;
     }
-
-
 }

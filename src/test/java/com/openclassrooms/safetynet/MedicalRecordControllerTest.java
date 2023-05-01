@@ -48,10 +48,10 @@ public class MedicalRecordControllerTest {
 
         List<MedicalRecord> result = null;
         try {
-            result = medicalRecordController.medicalRecordList();
+            result = medicalRecordController.getMedicalRecordList();
         } catch (Exception e) {
             Mockito.verify(medicalRecordService).getMedicalRecords();
-            Mockito.verify(medicalRecordController).medicalRecordList();
+            Mockito.verify(medicalRecordController).getMedicalRecordList();
             Assert.assertEquals("Request Get medicalRecordList cannot succeed", e.getMessage());
         }
 

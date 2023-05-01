@@ -21,7 +21,7 @@ public class PersonController {
     private PersonService personService;
 
     @GetMapping
-    public List<Person> personList() throws Exception {
+    public List<Person> getPersons() throws Exception {
         try {
             logger.info("Request GET: Get personList with success.");
             return personService.getPersons();
